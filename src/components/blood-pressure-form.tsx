@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -16,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { startTransition } from "react";
 
 const formSchema = z.object({
   systolic: z.coerce
@@ -33,7 +33,10 @@ const formSchema = z.object({
 });
 
 type BloodPressureFormProps = {
-  onAddReading: (data: { systolic: number; diastolic: number }) => void;
+  onAddReading: (data: {
+    systolic: number;
+    diastolic: number;
+  }) => Promise<void>;
 };
 
 export function BloodPressureForm({ onAddReading }: BloodPressureFormProps) {
@@ -41,14 +44,21 @@ export function BloodPressureForm({ onAddReading }: BloodPressureFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      systolic: '' as any,
-      diastolic: '' as any,
+      systolic: "",
+      diastolic: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    onAddReading(values);
-    form.reset();
+    startTransition(() => {
+      onAddReading(values).then(() => {
+        form.reset();
+        toast({
+          title: "Success",
+          description: "Your reading has been recorded.",
+        });
+      });
+    });
   }
 
   return (
@@ -61,11 +71,7 @@ export function BloodPressureForm({ onAddReading }: BloodPressureFormProps) {
             <FormItem>
               <FormLabel>Systolic</FormLabel>
               <FormControl>
-                <Input
-                  type="number"
-                  placeholder="e.g., 120"
-                  {...field}
-                />
+                <Input type="number" placeholder="e.g., 120" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -78,11 +84,7 @@ export function BloodPressureForm({ onAddReading }: BloodPressureFormProps) {
             <FormItem>
               <FormLabel>Diastolic</FormLabel>
               <FormControl>
-                <Input
-                  type="number"
-                  placeholder="e.g., 80"
-                  {...field}
-                />
+                <Input type="number" placeholder="e.g., 80" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

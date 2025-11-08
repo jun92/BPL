@@ -1,0 +1,15 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model BloodPressureReading {
+  id        String   @id @default(cuid())
+  systolic  Int
+  diastolic Int
+  timestamp DateTime @default(now())
+}
