@@ -49,10 +49,6 @@ export function BloodPressureForm({ onAddReading }: BloodPressureFormProps) {
   function onSubmit(values: z.infer<typeof formSchema>) {
     onAddReading(values);
     form.reset();
-    toast({
-      title: "Success!",
-      description: "Your new reading has been saved.",
-    });
   }
 
   return (
@@ -63,7 +59,7 @@ export function BloodPressureForm({ onAddReading }: BloodPressureFormProps) {
           name="systolic"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>최고 혈압 (Systolic)</FormLabel>
+              <FormLabel>Systolic</FormLabel>
               <FormControl>
                 <Input
                   type="number"
@@ -81,7 +77,7 @@ export function BloodPressureForm({ onAddReading }: BloodPressureFormProps) {
           name="diastolic"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>최저 혈압 (Diastolic)</FormLabel>
+              <FormLabel>Diastolic</FormLabel>
               <FormControl>
                 <Input
                   type="number"
@@ -100,7 +96,7 @@ export function BloodPressureForm({ onAddReading }: BloodPressureFormProps) {
           disabled={form.formState.isSubmitting}
         >
           <Plus className="mr-2 h-4 w-4" />
-          기록 추가 (Add Record)
+          Add Record
         </Button>
       </form>
     </Form>

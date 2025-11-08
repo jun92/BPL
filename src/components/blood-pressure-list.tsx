@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { BloodPressureReading } from "@/lib/types";
 import { History } from "lucide-react";
+import { useState, useEffect } from "react";
 
 type BloodPressureListProps = {
   readings: BloodPressureReading[];
@@ -37,6 +38,12 @@ function getBloodPressureStatus(
 }
 
 export function BloodPressureList({ readings }: BloodPressureListProps) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   if (readings.length === 0) {
     return (
       <Card className="shadow-lg rounded-xl">
@@ -95,18 +102,22 @@ export function BloodPressureList({ readings }: BloodPressureListProps) {
                     className="animate-in fade-in-0"
                   >
                     <TableCell>
-                      {new Intl.DateTimeFormat("en-US", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      }).format(reading.timestamp)}
+                      {isClient
+                        ? new Intl.DateTimeFormat("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          }).format(reading.timestamp)
+                        : null}
                     </TableCell>
                     <TableCell>
-                      {new Intl.DateTimeFormat("en-US", {
-                        hour: "numeric",
-                        minute: "2-digit",
-                        hour12: true,
-                      }).format(reading.timestamp)}
+                      {isClient
+                        ? new Intl.DateTimeFormat("en-US", {
+                            hour: "numeric",
+                            minute: "2-digit",
+                            hour12: true,
+                          }).format(reading.timestamp)
+                        : null}
                     </TableCell>
                     <TableCell className="text-center font-medium">
                       {reading.systolic}
