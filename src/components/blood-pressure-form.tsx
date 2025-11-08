@@ -41,8 +41,8 @@ export function BloodPressureForm({ onAddReading }: BloodPressureFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      systolic: undefined,
-      diastolic: undefined,
+      systolic: '' as any,
+      diastolic: '' as any,
     },
   });
 
@@ -65,7 +65,6 @@ export function BloodPressureForm({ onAddReading }: BloodPressureFormProps) {
                   type="number"
                   placeholder="e.g., 120"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.value)}
                 />
               </FormControl>
               <FormMessage />
@@ -83,7 +82,6 @@ export function BloodPressureForm({ onAddReading }: BloodPressureFormProps) {
                   type="number"
                   placeholder="e.g., 80"
                   {...field}
-                   onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.value)}
                 />
               </FormControl>
               <FormMessage />
